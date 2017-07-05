@@ -1,0 +1,108 @@
+def loadLocalProperties() {
+    Properties properties = new Properties()
+    File file = project.rootProject.file('local.properties');
+    if (file.exists()) {
+        properties.load(file.newDataInputStream())
+    }
+    return properties;
+}
+
+def localPropertiesInstance = loadLocalProperties();
+def RETROFIT_VERSION = '2.2.0'
+def OKHTTP_VERSION = '3.7.0'
+def BUTTERKNIFE_VERSION = '8.6.0'
+def FACEBOOK_VERSION = '1.3.0'
+def ESPRESSO_VERSION = '2.2.2'
+def SUPPORT_TEST = '0.5'
+
+ext {
+    localProperties = localPropertiesInstance
+
+    hasDefinedProperty = { key ->
+        return project.hasProperty(key) || localProperties.containsKey(key);
+    }
+
+    getDefinedProperty = { key ->
+        return localProperties.containsKey(key) ? localProperties.getProperty(key) :
+                project.hasProperty(key) ? project.getProperty(key) : null;
+    }
+
+    androidVersion = [
+            compileSdkVersion: 25,
+            minSdkVersion    : (min = getDefinedProperty('MIN_VERSION_SDK')) != null ? min.toInteger() : 16,
+            targetSdkVersion : 23,
+            buildToolsVersion: "25.0.3",
+            supportLibVersion: "25.3.1",
+            _group           : 'com.android.support',
+    ]
+
+    androidSupport = [
+            compat_v7      : androidVersion._group + ':appcompat-v7:' + androidVersion.supportLibVersion,
+            support_v4     : androidVersion._group + ':support-v4:' + androidVersion.supportLibVersion,
+            recyclerview_v7: androidVersion._group + ':recyclerview-v7:' + androidVersion.supportLibVersion,
+            cardview_v7    : androidVersion._group + ':cardview-v7:' + androidVersion.supportLibVersion,
+            design         : androidVersion._group + ':design:' + androidVersion.supportLibVersion,
+            annotations    : androidVersion._group + ':support-annotations:' + androidVersion.supportLibVersion,
+            multidex       : 'com.android.support:multidex:1.0.1'
+    ]
+
+    facebook = [
+            fresco     : "com.facebook.fresco:fresco:$FACEBOOK_VERSION",
+            support    : "com.facebook.fresco:animated-base-support:$FACEBOOK_VERSION",// 在API < 14上的机器支持WebP时
+            gif        : "com.facebook.fresco:animated-gif:$FACEBOOK_VERSION",// 支持 GIF 动图
+            webp       : "com.facebook.fresco:animated-webp:$FACEBOOK_VERSION",// 支持 WebP （静态图）
+            webpsupport: "com.facebook.fresco:webpsupport:$FACEBOOK_VERSION"// 支持 WebP （动态图）
+    ]
+
+    rxjava = [
+            core   : 'io.reactivex:rxjava:1.1.9',
+            android: 'io.reactivex:rxandroid:1.2.1'
+    ]
+
+    squareup = [
+            retrofit: [
+                    core         : "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION",
+                    adapters     : "com.squareup.retrofit2:retrofit-adapters:$RETROFIT_VERSION",
+                    adapterRxjava: "com.squareup.retrofit2:adapter-rxjava:$RETROFIT_VERSION",
+                    gson         : "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
+            ],
+
+            okhttp  : [
+                    core              : "com.squareup.okhttp3:okhttp:$OKHTTP_VERSION",
+                    loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:$OKHTTP_VERSION"
+            ]
+    ]
+
+    butterknife = [
+            core    : "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION",
+            compiler: "com.jakewharton:butterknife-compiler:$BUTTERKNIFE_VERSION"
+    ]
+
+    others = [
+            playServicesAppIndexing: 'com.google.android.gms:play-services-appindexing:8.4.0',
+            gson                   : 'com.google.code.gson:gson:2.7',
+            eventBus               : 'org.greenrobot:eventbus:3.0.0',
+            homhomlin              : 'homhomlin.lib:apsts:1.4.0',
+            highlight              : 'com.isanwenyu.highlight:highlight:1.5.1',
+            dialogs                : 'com.afollestad.material-dialogs:core:0.9.4.5',
+            amplitude              : 'com.amplitude:android-sdk:2.12.0'
+    ]
+
+    localTest = [
+            junit      : 'junit:junit:4.12',
+            mockitoCore: 'org.mockito:mockito-core:2.2.29'
+    ]
+
+    instrumentedTest = [
+            support : [
+                    testRules : "com.android.support.test:rules:$SUPPORT_TEST",
+                    testRunner: "com.android.support.test:runner:$SUPPORT_TEST"
+            ],
+
+            espresso: [
+                    core   : "com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION",
+                    contrib: "com.android.support.test.espresso:espresso-contrib:$ESPRESSO_VERSION",
+                    idling : "com.android.support.test.espresso:espresso-idling-resource:$ESPRESSO_VERSION"
+            ]
+    ]
+}

@@ -1,0 +1,83 @@
+[
+    {
+        "outputFile": "/Users/david/Desktop/DuoCaiCamera/Library/HListView/build/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 59,
+                    "endOffset": 110
+                },
+                "from": {
+                    "file": "/Users/david/Desktop/DuoCaiCamera/Library/HListView/src/main/res/values/hlv_attrs.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 1,
+                        "startOffset": 106,
+                        "endColumn": 57,
+                        "endOffset": 162
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 115,
+                    "endColumn": 65,
+                    "endOffset": 176
+                },
+                "from": {
+                    "file": "/Users/david/Desktop/DuoCaiCamera/Library/HListView/src/main/res/values/hlv_attrs.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 1,
+                        "startOffset": 228,
+                        "endColumn": 63,
+                        "endOffset": 290
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 181,
+                    "endColumn": 64,
+                    "endOffset": 241
+                },
+                "from": {
+                    "file": "/Users/david/Desktop/DuoCaiCamera/Library/HListView/src/main/res/values/hlv_attrs.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 1,
+                        "startOffset": 164,
+                        "endColumn": 62,
+                        "endOffset": 225
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 246,
+                    "endColumn": 55,
+                    "endOffset": 297
+                },
+                "from": {
+                    "file": "/Users/david/Desktop/DuoCaiCamera/Library/HListView/src/main/res/values/hlv_attrs.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 1,
+                        "startOffset": 52,
+                        "endColumn": 53,
+                        "endOffset": 104
+                    }
+                }
+            }
+        ]
+    }
+]

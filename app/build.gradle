@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+
+def dependency = rootProject.ext
+
+def versionMinor = 1
+def versionPatch = 0
+def baseVersionCode = versionMinor * 10 + versionPatch
+def baseVersionName = versionMinor + '.' + versionPatch
+android {
+    compileSdkVersion dependency.androidVersion.compileSdkVersion
+    buildToolsVersion dependency.androidVersion.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.duocai.camera"
+        minSdkVersion dependency.androidVersion.minSdkVersion
+        targetSdkVersion dependency.androidVersion.targetSdkVersion
+        versionCode baseVersionCode
+        versionName "${baseVersionName}"
+        multiDexEnabled true
+    }
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+//            signingConfig signingConfigs.debugConfig
+        }
+
+        release {
+            debuggable false
+            minifyEnabled false
+            zipAlignEnabled true
+            shrinkResources false
+//            signingConfig signingConfigs.releaseConfig
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        def fileName = "duocai${defaultConfig.versionName}.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':GpuImage')
+    compile project(':ImageViewTouch')
+    compile project(':HListView')
+    compile project(':omoshiroilib')
+    compile files('libs/eventbus-2.4.1.jar')
+    compile files('libs/ormlite-android-4.48.jar')
+    compile files('libs/ormlite-core-4.48.jar')
+    compile files('libs/gson-2.2.4.jar')
+    compile files('libs/universal-image-loader-1.9.4.jar')
+    compile files('libs/butterknife-7.0.1.jar')
+    compile dependency.androidSupport.compat_v7
+}

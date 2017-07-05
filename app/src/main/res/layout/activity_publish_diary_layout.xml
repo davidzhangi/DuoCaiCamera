@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <com.duocai.camera.view.CommonDiaryActionBar
+        android:id="@+id/action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:confirm_name="分享"
+        app:title_name="@string/app_name" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        <!-- 特效相机  -->
+        <RelativeLayout
+            android:id="@+id/lsq_entry_camera"
+            android:layout_width="match_parent"
+            android:layout_height="69dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/lsq_homepage_button_normal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/lsq_homepage_camera"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="25dp"
+                android:background="@drawable/lsq_homepage_icon_camera"
+                android:scaleType="centerInside" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="19sp"
+                android:layout_toRightOf="@id/lsq_homepage_camera"
+                android:text="@string/app_name"
+                android:textColor="#552613"
+                android:textSize="19sp" />
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="9dp"
+                android:background="@drawable/lsq_homepage_icon_next"
+                android:scaleType="centerInside" />
+        </RelativeLayout>
+        <!-- 照片美化  -->
+        <RelativeLayout
+            android:id="@+id/lsq_entry_editor"
+            android:layout_width="match_parent"
+            android:layout_height="69dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="9dp"
+            android:background="@drawable/lsq_homepage_button_normal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/lsq_homepage_beauty"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="25dp"
+                android:background="@drawable/lsq_homepage_icon_beauty"
+                android:scaleType="centerInside" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="19sp"
+                android:layout_toRightOf="@id/lsq_homepage_beauty"
+                android:text="照片美化"
+                android:textColor="#552613"
+                android:textSize="19sp" />
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="9dp"
+                android:background="@drawable/lsq_homepage_icon_next"
+                android:scaleType="centerInside" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
