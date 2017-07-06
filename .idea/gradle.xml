@@ -12,8 +12,8 @@
             <option value="$PROJECT_DIR$/Library/HListView" />
             <option value="$PROJECT_DIR$/Library/ImageViewTouch" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/omoshiroilib" />
-            <option value="$PROJECT_DIR$/stmobile" />
+            <option value="$PROJECT_DIR$/lib_omoshiroi" />
+            <option value="$PROJECT_DIR$/lib_stmobile" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

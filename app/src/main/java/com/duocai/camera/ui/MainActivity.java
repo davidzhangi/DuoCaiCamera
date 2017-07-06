@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Process;
-import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.duocai.camera.R;
@@ -18,7 +18,6 @@ import com.martin.ads.omoshiroilib.ui.CameraPreviewActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
 
 public class MainActivity extends BaseActivity {
 
@@ -29,6 +28,8 @@ public class MainActivity extends BaseActivity {
     RelativeLayout lsqEntryEditor;
     @Bind(R.id.lsq_entry_camera)
     RelativeLayout lsqEntryCamera;
+    @Bind(R.id.image_view)
+    ImageView imageView;
 
     private MyDialog alertDialog;
     private String cameraPath;
@@ -36,7 +37,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_publish_diary_layout);
+        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
     }
 
@@ -53,11 +54,6 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.lsq_entry_editor)
     public void editClick() {
-//        Intent intent = new Intent();
-//        intent.setType("image/*");
-//        intent.setAction(Intent.ACTION_GET_CONTENT);
-//        startActivityForResult(intent, 1);
-
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("image/jpeg");
@@ -96,7 +92,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v, MyDialog.ClickType type) {
                 if (type == MyDialog.ClickType.CONFIRM) {
-                    Process.killProcess(Process.myPid());
+                    System.exit(0);
                 }
             }
         });
@@ -116,7 +112,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void finish() {
-        EventBus.getDefault().unregister(this);
         super.finish();
     }
 }

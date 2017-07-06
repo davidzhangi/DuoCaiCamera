@@ -28,7 +28,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':stmobile')
+    compile project(':lib_stmobile')
     compile dependency.androidSupport.compat_v7
     compile dependency.androidSupport.recyclerview_v7
     compile 'com.sdsmdg.tastytoast:tastytoast:0.1.1'

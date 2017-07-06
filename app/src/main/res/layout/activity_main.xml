@@ -58,6 +58,14 @@
                 android:background="@drawable/lsq_homepage_icon_next"
                 android:scaleType="centerInside" />
         </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY" />
         <!-- 照片美化  -->
         <RelativeLayout
             android:id="@+id/lsq_entry_editor"

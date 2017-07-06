@@ -7,6 +7,8 @@
       <module fileurl="file://$PROJECT_DIR$/Library/HListView/HListView.iml" filepath="$PROJECT_DIR$/Library/HListView/HListView.iml" />
       <module fileurl="file://$PROJECT_DIR$/Library/ImageViewTouch/ImageViewTouch.iml" filepath="$PROJECT_DIR$/Library/ImageViewTouch/ImageViewTouch.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_omoshiroi/lib_omoshiroi.iml" filepath="$PROJECT_DIR$/lib_omoshiroi/lib_omoshiroi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_stmobile/lib_stmobile.iml" filepath="$PROJECT_DIR$/lib_stmobile/lib_stmobile.iml" />
       <module fileurl="file://$PROJECT_DIR$/omoshiroilib/omoshiroilib.iml" filepath="$PROJECT_DIR$/omoshiroilib/omoshiroilib.iml" />
       <module fileurl="file://$PROJECT_DIR$/stmobile/stmobile.iml" filepath="$PROJECT_DIR$/stmobile/stmobile.iml" />
     </modules>

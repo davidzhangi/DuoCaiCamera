@@ -104,6 +104,28 @@ public class ProcessPhotoActivity extends BaseActivity {
     private StickerView selectSticker = null;
     private Activity mContext;
 
+    public void onEventMainThread(EventType event) {
+        if (event != null) {
+            float type = event.getType();
+            switch ((int) type) {
+                case -1:
+                    currentPosition = 0;
+                    doEvent();
+                    break;
+                case -2:
+                    currentPosition = 1;
+                    doEvent();
+                    break;
+                case -3:
+                    currentPosition = 2;
+                    doEvent();
+                    break;
+                default:
+                    doEventDefault(event);
+                    break;
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +138,14 @@ public class ProcessPhotoActivity extends BaseActivity {
         EventBus.getDefault().register(this);
         screenW = UIUtil.getScreenWidth(this);
         mStickers.clear();
+
         init();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        switchText();
     }
 
     private void init() {
@@ -308,44 +337,23 @@ public class ProcessPhotoActivity extends BaseActivity {
                 }
             }
         });
-
     }
 
-
-    private void showAlert() {
-        if (!is_edit) {
-            if (!checkEdit()) {
-                finish();
-                return;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (data != null) {
+                TagInfo tagInfo = (TagInfo) data.getSerializableExtra(Constants.EXTRA_DATA);
+                addTag(tagInfo, false);
             }
         }
-        alertDialog.setTitle("确认放弃编辑过的图片吗?");
-        alertDialog.setCancelName("继续编辑");
-        alertDialog.setSubmitName("放弃编辑");
-        alertDialog.show(back);
     }
 
-    public void onEventMainThread(EventType event) {
-        if (event != null) {
-            float type = event.getType();
-            switch ((int) type) {
-                case -1:
-                    currentPosition = 0;
-                    doEvent();
-                    break;
-                case -2:
-                    currentPosition = 1;
-                    doEvent();
-                    break;
-                case -3:
-                    currentPosition = 2;
-                    doEvent();
-                    break;
-                default:
-                    doEventDefault(event);
-                    break;
-            }
-        }
+    @OnClick(R.id.tv_go_on)
+    public void onClick() {
+        tv_go_on.setEnabled(false);
+        savePic();
     }
 
     private void doEventDefault(EventType event) {
@@ -385,7 +393,6 @@ public class ProcessPhotoActivity extends BaseActivity {
         }
     }
 
-
     private void savePic() {
         ImageProcessor processor = new ImageProcessor() {
             @Override
@@ -394,9 +401,6 @@ public class ProcessPhotoActivity extends BaseActivity {
                 Bitmap capture = null;
                 try {
                     capture = mGPUImageView.capture();
-
-                    Log.d("david", "保存:" + capture.getWidth() + "---" + capture.getHeight());
-
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     capture = currentBitmap;
@@ -407,82 +411,14 @@ public class ProcessPhotoActivity extends BaseActivity {
             @Override
             public void postResult(String fileName) {
                 wheel.setVisibility(View.GONE);
-                if (TextUtils.isEmpty(fileName)) {
-                    return;
-                }
-                for (Map.Entry<Float, TagView> entry : map.entrySet()) {
-                    infoList.add(entry.getValue().getTagInfo());
-                }
-                tagImage.Pic = fileName;
-                tagImage.TagInfo = infoList;
-                if (adapter != null) {
-                    tagImage.filterType = adapter.getSelectFilter();
-                }
-                tagImage.localPath = fileName;
-                if (editTagImg != null) {
-                    tagImage.localPath = editTagImg.localPath;
-                } else {
-                    tagImage.localPath = getIntent().getData().getPath();
-                }
-                if (editTagImg == null) {
-                    if (is_edit) {
-                        EventBus.getDefault().post(new CloseActivity(0));
-                        EventBus.getDefault().post(tagImage);
-                    } else {
-                        if (objOrder != null) {
-                            DiaryUtils.openPublishDiary(mContext, tagImage, objOrder);//订单
-                        } else if (objActivity != null) {
-                            DiaryUtils.openPublishDiary(mContext, tagImage, objActivity);//活动
-                        } else {
-                            DiaryUtils.openPublishDiary(mContext, tagImage);//新建
-                        }
-                    }
-                } else {
-                    EventBus.getDefault().post(new CloseActivity(0));
-                    EventBus.getDefault().post(tagImage);
-                }
+
                 tv_go_on.setEnabled(true);
                 CameraManager.getInst().close();
                 finish();
             }
         };
         processor.process(mStickers);
-
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        DataHandler.recycleBitmap(currentBitmap);
-        if (mGPUImageView != null) {
-            mGPUImageView.recycleSurface();
-        }
-        if (adapter != null && adapter.getList() != null) {
-            for (Bitmap bitmap : adapter.getList()) {
-                DataHandler.recycleBitmap(bitmap);
-            }
-            adapter.getList().clear();
-        }
-        EventBus.getDefault().unregister(this);
-        System.gc();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (data != null) {
-                TagInfo tagInfo = (TagInfo) data.getSerializableExtra(Constants.EXTRA_DATA);
-                addTag(tagInfo, false);
-            }
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        showAlert();
-    }
-
 
     private boolean checkEdit() {
         int size = map.size();
@@ -490,12 +426,6 @@ public class ProcessPhotoActivity extends BaseActivity {
             return false;
         }
         return size > 0 || adapter.getSelectFilter() > 0 || mStickers.size() > 0;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        switchText();
     }
 
     private void switchText() {
@@ -582,10 +512,39 @@ public class ProcessPhotoActivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.tv_go_on)
-    public void onClick() {
-        tv_go_on.setEnabled(false);
-        savePic();
+    private void showAlert() {
+        if (!is_edit) {
+            if (!checkEdit()) {
+                finish();
+                return;
+            }
+        }
+        alertDialog.setTitle("确认放弃编辑过的图片吗?");
+        alertDialog.setCancelName("继续编辑");
+        alertDialog.setSubmitName("放弃编辑");
+        alertDialog.show(back);
+    }
+
+    @Override
+    public void onBackPressed() {
+        showAlert();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DataHandler.recycleBitmap(currentBitmap);
+        if (mGPUImageView != null) {
+            mGPUImageView.recycleSurface();
+        }
+        if (adapter != null && adapter.getList() != null) {
+            for (Bitmap bitmap : adapter.getList()) {
+                DataHandler.recycleBitmap(bitmap);
+            }
+            adapter.getList().clear();
+        }
+        EventBus.getDefault().unregister(this);
+        System.gc();
     }
 }
 

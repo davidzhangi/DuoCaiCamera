@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 def dependency = rootProject.ext
 
-def versionMinor = 1
+def versionMinor = 2
 def versionPatch = 0
 def baseVersionCode = versionMinor * 10 + versionPatch
 def baseVersionName = versionMinor + '.' + versionPatch
@@ -53,7 +53,7 @@ dependencies {
     compile project(':GpuImage')
     compile project(':ImageViewTouch')
     compile project(':HListView')
-    compile project(':omoshiroilib')
+    compile project(':lib_omoshiroi')
     compile files('libs/eventbus-2.4.1.jar')
     compile files('libs/ormlite-android-4.48.jar')
     compile files('libs/ormlite-core-4.48.jar')
