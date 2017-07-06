@@ -25,7 +25,6 @@ import com.duocai.camera.adapter.FilterAdapter;
 import com.duocai.camera.adapter.WaterMarkAdapter;
 import com.duocai.camera.base.BaseActivity;
 import com.duocai.camera.controller.CameraManager;
-import com.duocai.camera.model.CloseActivity;
 import com.duocai.camera.model.EventType;
 import com.duocai.camera.model.FilterEffect;
 import com.duocai.camera.model.OrderDataItem;
@@ -33,7 +32,6 @@ import com.duocai.camera.model.TagImage;
 import com.duocai.camera.model.TagInfo;
 import com.duocai.camera.utils.Constants;
 import com.duocai.camera.utils.DataHandler;
-import com.duocai.camera.utils.DiaryUtils;
 import com.duocai.camera.utils.GPUImageFilterTools;
 import com.duocai.camera.utils.ImageCreator;
 import com.duocai.camera.utils.ImageProcessor;
@@ -63,8 +61,8 @@ public class ProcessPhotoActivity extends BaseActivity {
 
     @Bind(R.id.gpu_image)
     GPUImageView mGPUImageView;
-    @Bind(R.id.drawing_view_container)
-    ViewGroup drawArea;
+    //    @Bind(R.id.drawing_view_container)
+//    ViewGroup drawArea;
     @Bind(R.id.tv_go_on)
     TextView tv_go_on;
     @Bind(R.id.tag_layout)
@@ -183,10 +181,10 @@ public class ProcessPhotoActivity extends BaseActivity {
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) indicator.getLayoutParams();
         params.leftMargin = (screenW / 6 - UIUtil.dp2px(8));
         indicator.requestLayout();
-        RelativeLayout.LayoutParams overlayParam = new RelativeLayout.LayoutParams(screenW, screenW);
-        overlay = (FrameLayout) LayoutInflater.from(ProcessPhotoActivity.this).inflate(
-                R.layout.water_mark_overlay, null);
-        drawArea.addView(overlay, overlayParam);
+//        RelativeLayout.LayoutParams overlayParam = new RelativeLayout.LayoutParams(screenW, screenW);
+//        overlay = (FrameLayout) LayoutInflater.from(ProcessPhotoActivity.this).inflate(
+//                R.layout.water_mark_overlay, null);
+//        drawArea.addView(overlay, overlayParam);
         filterListView.setVisibility(View.VISIBLE);
         alertDialog = new MyDialog(this);
         list_water_mark.setAdapter(new WaterMarkAdapter(mContext));
@@ -199,7 +197,7 @@ public class ProcessPhotoActivity extends BaseActivity {
                 showAlert();
             }
         });
-        drawArea.setOnTouchListener(new View.OnTouchListener() {
+        mGPUImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (currentPosition == 2) {
@@ -262,6 +260,11 @@ public class ProcessPhotoActivity extends BaseActivity {
                 mGPUImageView.setLayoutParams(layoutParams);
 
                 mGPUImageView.setImage(currentBitmap);
+
+                FrameLayout.LayoutParams overlayParam = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+                overlay = (FrameLayout) LayoutInflater.from(ProcessPhotoActivity.this).inflate(R.layout.water_mark_overlay, null);
+                mGPUImageView.addView(overlay, overlayParam);
+
                 tv_go_on.setEnabled(true);
             }
 
@@ -297,7 +300,7 @@ public class ProcessPhotoActivity extends BaseActivity {
         }
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenW, screenW);
         tagView.setLayoutParams(params);
-        drawArea.addView(tagView, params);
+        mGPUImageView.addView(tagView, params);
         map.put(tagInfo.firstPointX, tagView);
     }
 
@@ -359,12 +362,12 @@ public class ProcessPhotoActivity extends BaseActivity {
     private void doEventDefault(EventType event) {
         if (TextUtils.equals(event.getTag(), Constants.DEL_TAG)) {
             float viewId = event.getType();
-            drawArea.removeView(map.get(viewId));
+            mGPUImageView.removeView(map.get(viewId));
             map.remove(viewId);
         }
         if (TextUtils.equals(event.getTag(), Constants.SAVE_TAG)) {
             float viewId = event.getType();
-            drawArea.removeView(map.get(viewId));
+            mGPUImageView.removeView(map.get(viewId));
             map.remove(viewId);
             addTag(event.getItem(), false);
         }
@@ -414,6 +417,9 @@ public class ProcessPhotoActivity extends BaseActivity {
 
                 tv_go_on.setEnabled(true);
                 CameraManager.getInst().close();
+
+                Log.d("david", "fileName:" + fileName);
+                EventBus.getDefault().post(fileName);
                 finish();
             }
         };

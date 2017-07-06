@@ -1,9 +1,12 @@
 package com.duocai.camera.ui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Process;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -18,6 +21,7 @@ import com.martin.ads.omoshiroilib.ui.CameraPreviewActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 public class MainActivity extends BaseActivity {
 
@@ -34,11 +38,32 @@ public class MainActivity extends BaseActivity {
     private MyDialog alertDialog;
     private String cameraPath;
 
+    public void onEventMainThread(String path) {
+        if (TextUtils.isEmpty(path)) {
+            return;
+        }
+
+        Bitmap bm = BitmapFactory.decodeFile(path);
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = imageView.getWidth();
+        if (bm.getWidth() <= width) {
+            imageView.setImageBitmap(bm);
+        } else {
+            Bitmap bmp = Bitmap.createScaledBitmap(bm, width, bm.getHeight() * width / bm.getWidth(), true);
+            imageView.setImageBitmap(bmp);
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @OnClick(R.id.lsq_entry_camera)
@@ -111,7 +136,8 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public void finish() {
-        super.finish();
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 }
